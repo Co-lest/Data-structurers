@@ -1,5 +1,4 @@
 #include <iostream>
-using namespace std;
 
 class Node
 {
@@ -48,26 +47,65 @@ public:
         head = newNode;
     }
 
+    void deleting(int value)
+    {
+        Node *prev;
+        temp = head;
+        if (head->value == value)
+        {
+            // prev = head;
+            head = temp->next;
+        }
+        else
+        {
+            while (temp->next != nullptr)
+            {
+                prev = temp;
+                temp = temp->next;
+                if (temp->value == value)
+                {
+                    prev->next = temp->next;
+                    return;
+                }
+            }
+            if (temp->value == value)
+            {
+                prev->next = nullptr;
+                prev = tail;
+                return;
+            }
+            else
+            {
+                std::cout << "There is no such value in the nodes! Please enter another node." << std::endl;
+                return;
+            }
+        }
+    }
+
     void printing()
     {
         Node *temPrint;
         temPrint = head;
-        try{
-        if(length == 0)
+        try
         {
-            throw(length);
-        }else
-        {
-            do
+            if (length == 0)
             {
+                throw(length);
+            }
+            else
+            {
+                do
+                {
 
-                cout << temPrint->value << "->";
-                temPrint = temPrint->next;
+                    std::cout << temPrint->value << "->";
+                    temPrint = temPrint->next;
 
-            } while (temPrint->next != nullptr);
-            cout << temPrint->value;
+                } while (temPrint->next != nullptr);
+                std::cout << temPrint->value;
+            }
         }
-        }catch(int error){
+        catch (int error)
+        {
             std::cerr << "There is no node at the list: " << error << '\n';
         }
     }
@@ -80,6 +118,7 @@ int main()
     one.append(7);
     one.prepend(2);
     one.prepend(1);
+    one.deleting(7);
     one.printing();
     return 0;
 }
