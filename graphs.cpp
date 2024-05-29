@@ -1,96 +1,96 @@
 #include <iostream>
-#include <unordered_map>
-#include <unordered_set>
-
-using namespace std;
+#include <map>
+#include <vector>
+#include <algorithm>
 
 class Graph
 {
 private:
-    unordered_map<string, unordered_set<string>> adjList;
-
+    std::map<int, std::vector<int>> m_graph;
 public:
+    void addVertex(int vertex)
+    {
+        m_graph[vertex] = {};
+    }
+
+    void addEdge(int v1, int v2)
+    {
+        m_graph[v1].push_back(v2);
+        m_graph[v2].push_back(v1);
+    }
+
     void printGraph()
     {
-        unordered_map<string, unordered_set<string>>::iterator kavPair = adjList.begin();
-        while (kavPair != adjList.end())
+        for (const auto& element : m_graph)
         {
-            cout << kavPair->first << ": [";
-            unordered_set<string>::iterator edge = kavPair->second.begin();
-            bool first = true;
-            while (edge != kavPair->second.end())
+            std::cout << element.first << ": ";
+            for(const auto& curEdge : element.second)
             {
-                if (!first)
-                {
-                    cout << ", ";
-                }
-                cout << *edge;
-                edge++;
-                first = false;
+                std::cout << curEdge << " ";
             }
-            cout << "]" << endl;
-            kavPair++;
+            std::cout << std::endl;
         }
     }
-
-    bool addVertex(string vertex)
+    void removeVertex(int vertex)
     {
-        if (adjList.count(vertex) == 0)
+        if (m_graph.find(vertex) == m_graph.end())
         {
-            adjList[vertex];
-            return true;
+            std::cout << "Invalid vertex" << std::endl;
+            return;
         }
-        return false;
+        m_graph.erase(vertex);
+
+        for(auto& element : m_graph)
+        {
+            auto& value = element.second;
+            value.erase(std::remove(value.begin(), value.end(), vertex), value.end());
+        }
+        
+    }
+    std::vector<int> getVertices()
+    {
+        std::cout << "vertices: ";
+        std::vector<int>vertices;
+        
+        for(const auto& element : m_graph)
+        {
+            vertices.push_back(element.first);
+            std::cout << element.first << " ";
+        }
+        std::cout << std::endl;
+        return vertices;
     }
 
-    bool addEdge(string vertex1, string vertex2)
+    std::vector<int> getEdges(int vertex)
     {
-        if (adjList.count(vertex1) != 0 && adjList.count(vertex2) != 0)
+        if (m_graph.find(vertex) == m_graph.end())
         {
-            adjList.at(vertex1).insert(vertex2);
-            adjList.at(vertex2).insert(vertex1);
-            return true;
+            std::cout << "Invalid Vertex!" << std::endl;
+            return {}; 
         }
-        return false;
-    }
-
-    bool removeEdge(string vertex1, string vertex2)
-    {
-        if (adjList.count(vertex1) != 0 && adjList.count(vertex2) != 0)
+        std::cout << "Edges: ";
+        for(const auto& i : m_graph[vertex])
         {
-            adjList.at(vertex1).erase(vertex2);
-            adjList.at(vertex2).erase(vertex1);
-            return true;
+            std::cout << i << std::endl;
         }
-        return false;
-    }
-
-    bool removeVertex(string vertex)
-    {
-        if (adjList.count(vertex) == 0)
-        {
-            return false;
-        }
-        for (auto otherVertex : adjList.at(vertex))
-        {
-            adjList.at(otherVertex).erase(vertex);
-        }
-        adjList.erase(vertex);
-        return true;
+        std::cout << std::endl;
+        return m_graph[vertex];
     }
 };
 
 int main(void)
 {
     Graph myGraph;
-
-    myGraph.addEdge("A", "B");
-    myGraph.addEdge("A", "C");
-    myGraph.addEdge("B", "D");
-    myGraph.addEdge("C", "D");
-
-    cout << "Graph representation:" << endl;
+    myGraph.addVertex(1);
+    myGraph.addVertex(2);
+    myGraph.addVertex(3);
+    myGraph.addEdge(1, 2);
+    myGraph.addEdge(1, 3);
+    myGraph.addEdge(2, 3);
+    myGraph.removeVertex(3);
     myGraph.printGraph();
+    myGraph.getVertices();
+    myGraph.getEdges(1);
 
     return 0;
 }

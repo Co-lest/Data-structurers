@@ -14,7 +14,6 @@ public:
         left = nullptr;
         right = nullptr;
     }
-
 };
 
 class binarySearchTree
@@ -34,7 +33,7 @@ public:
             return;
         }
         Node *temp = root;
-        //temp = root;
+        // temp = root;
 
         while (true)
         {
@@ -89,7 +88,7 @@ public:
         {
             return true;
         }
-        else if(value < curNode->value)
+        else if (value < curNode->value)
         {
             return findNode(value, curNode->left);
         }
