@@ -2,27 +2,33 @@
 #include <algorithm>
 
 void coinExchangeGreedy(int coins[], int numCoins, int amount, int result[], int& resultSize) {
-    // Sort coins in descending order using a simple bubble sort (or std::sort)
-    for (int i = 0; i < numCoins - 1; ++i) {
-        for (int j = 0; j < numCoins - i - 1; ++j) {
-            if (coins[j] < coins[j + 1]) {
-                int temp = coins[j];
-                coins[j] = coins[j + 1];
-                coins[j + 1] = temp;
+    for (int i = 0; i < numCoins - 1; ++i) 
+    {
+        for (int j = 0; j < numCoins - i - 1; ++j) 
+        {
+            if (*(coins + j) < *(coins + j + 1)) 
+            {
+                int temp = *(coins + j);
+                *(coins + j) = *(coins + j + 1);
+                *(coins + j + 1) = temp;
             }
         }
     }
+    
 
     resultSize = 0;
-    for (int i = 0; i < numCoins; ++i) {
-        while (amount >= coins[i]) {
+    for (int i = 0; i < numCoins; ++i) 
+    {
+        while (amount >= coins[i]) 
+        {
             amount -= coins[i];
             result[resultSize++] = coins[i];
         }
     }
 
-    if (amount != 0) {
-        resultSize = -1; // Indicate failure
+    if (amount != 0) 
+    {
+        resultSize = -1; 
     }
 }
 
@@ -30,18 +36,21 @@ int main() {
     int coins[] = {1, 5, 10, 25};
     int numCoins = sizeof(coins) / sizeof(coins[0]);
     int amount = 49;
-    int result[100]; // Assuming a maximum of 100 coins in the result
+    int result[100]; // maximum of 100 coins in the result
     int resultSize;
 
     coinExchangeGreedy(coins, numCoins, amount, result, resultSize);
 
-    if (resultSize >= 0) {
+    if (resultSize >= 0) 
+    {
         std::cout << "Coins to exchange for " << amount << ": ";
         for (int i = 0; i < resultSize; ++i) {
             std::cout << result[i] << " ";
         }
         std::cout << std::endl;
-    } else {
+    }
+    else 
+    {
         std::cout << "Greedy algorithm failed to find a solution for " << amount << " using the given coins." << std::endl;
     }
 
@@ -54,13 +63,17 @@ int main() {
 
     coinExchangeGreedy(coins2, numCoins2, amount2, result2, resultSize2);
 
-    if(resultSize2 >= 0){
+    if(resultSize2 >= 0)
+    {
         std::cout << "Coins to exchange for " << amount2 << ": ";
-        for (int i = 0; i < resultSize2; ++i) {
+        for (int i = 0; i < resultSize2; ++i) 
+        {
             std::cout << result2[i] << " ";
         }
         std::cout << std::endl;
-    } else {
+    } 
+    else 
+    {
         std::cout << "Greedy algorithm failed to find a solution for " << amount2 << " using the given coins." << std::endl;
     }
 
